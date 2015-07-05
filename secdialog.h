@@ -3,6 +3,8 @@
 
 #include <QDialog>
 #include <QFileSystemModel>
+#include <QMessageBox>
+#include "mainwindow.h"
 
 namespace Ui {
 class SecDialog;
@@ -19,8 +21,18 @@ public:
 private slots:
     void on_treeView_clicked(const QModelIndex &index);
 
+    void on_ok_button_clicked();
+
+    QVariant check_artist(char artist[31]);
+
+    QVariant check_album(char album[31]);
+
+    void on_listView_clicked(const QModelIndex &index);
+
 private:
     Ui::SecDialog *ui;
+    QString sPath;
+    QMessageBox messageBox;
     QFileSystemModel *dirmodel;
     QFileSystemModel *filemodel;
 };

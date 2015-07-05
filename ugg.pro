@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
+QT       += core sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,10 +15,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    secdialog.cpp
+    secdialog.cpp \
+    musicplayerdialog.cpp
 
 HEADERS  += mainwindow.h \
-    secdialog.h
+    secdialog.h \
+    musicplayerdialog.h
 
 FORMS    += mainwindow.ui \
-    secdialog.ui
+    secdialog.ui \
+    musicplayerdialog.ui
