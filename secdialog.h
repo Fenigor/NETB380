@@ -31,6 +31,7 @@ private slots:
 
 private:
     Ui::SecDialog *ui;
+    QSqlDatabase db;
     QString sPath;
     QMessageBox messageBox;
     QFileSystemModel *dirmodel;

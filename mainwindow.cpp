@@ -7,6 +7,8 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QStandardPaths>
+#include <QFormLayout>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -18,40 +20,58 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->SearchByBox->addItem("Album_name");
     ui->SearchByBox->addItem("Genre_type");
 
-    QString servername = "localhost";
-    QString dbname = "test";
-    QString pass = "admin";
+    QDialog *inputPanel = new QDialog(this);
+    QFormLayout *form = new QFormLayout(inputPanel);
+    QLabel *ip = new QLabel("IP Address :",inputPanel);
+    QLineEdit *ipInput = new QLineEdit(inputPanel);
+    form->addRow(ip,ipInput);
+    QLabel *dbname = new QLabel("DataBase Name :",inputPanel);
+    QLineEdit *dbInput = new QLineEdit(inputPanel);
+    form->addRow(dbname,dbInput);
+    QLabel *userName = new QLabel("Username :",inputPanel);
+    QLineEdit *userNameInput = new QLineEdit(inputPanel);
+    form->addRow(userName,userNameInput);
+    QLabel *password = new QLabel("Password :",inputPanel);
+    QLineEdit *passInput = new QLineEdit(inputPanel);
+    form->addRow(password,passInput);
+    QPushButton *connect_btn = new QPushButton(inputPanel);
+    connect_btn->setText("Connect to Database");
+    connect_btn->connect(connect_btn,SIGNAL(clicked()),inputPanel,SLOT(close()));
+    form->addRow(connect_btn);
+
+    inputPanel->exec();
 
     db = QSqlDatabase::addDatabase("QPSQL");
-    db.setHostName(servername);
-    db.setDatabaseName(dbname);
-    db.setUserName("postgres");
-    db.setPassword(pass);
+    db.setHostName(ipInput->text());
+    db.setDatabaseName(dbInput->text());
+    db.setUserName(userNameInput->text());
+    db.setPassword(passInput->text());
 
     if(db.open())
     {
         qDebug() << "Opened!";
+        this->qmodel = new QSqlQueryModel();
+        qmodel->setQuery("select songs.song_name,artist.artist_name,album.album_name, songs.address,genre.genre_type, songs.year from songs \
+                         join artist on songs.artist = artist.artist_id \
+                         join album on songs.album = album_id \
+                         join genre on songs.genre = genre_id");
+        ui->tableView->setModel(qmodel);
     }
     else
     {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","Database didn't open!Probabbly wrong input.");
+        messageBox.setFixedSize(500,200);
         qDebug() << "Error = " << db.lastError().text();
     }
-
-    this->qmodel = new QSqlQueryModel();
-    qmodel->setQuery("select songs.song_name,artist.artist_name,album.album_name, songs.address,genre.genre_type, songs.year from songs \
-                     join artist on songs.artist = artist.artist_id \
-                     join album on songs.album = album_id \
-                     join genre on songs.genre = genre_id");
-    ui->tableView->setModel(qmodel);
-
 }
-
+/* Destructor
+ * closes database connecting when called */
 MainWindow::~MainWindow()
 {
     db.close();
     qDebug() << "DB CLOSED!"<< endl;
     delete ui;
-
 }
 
 void MainWindow::on_Add_clicked()
@@ -97,5 +117,14 @@ void MainWindow::on_Search_Button_clicked()
         join genre on songs.genre = genre_id \
         where %2 = '%1'").arg(ui->lineEdit->text()).arg(ui->SearchByBox->currentText()));
     qDebug() << ui->lineEdit->text() << endl;
+    ui->tableView->setModel(qmodel);
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    qmodel->setQuery("select songs.song_name,artist.artist_name,album.album_name, songs.address,genre.genre_type, songs.year from songs \
+                     join artist on songs.artist = artist.artist_id \
+                     join album on songs.album = album_id \
+                     join genre on songs.genre = genre_id");
     ui->tableView->setModel(qmodel);
 }

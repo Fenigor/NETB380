@@ -36,7 +36,7 @@
   <widget class="QPushButton" name="ok_button">
    <property name="geometry">
     <rect>
-     <x>490</x>
+     <x>420</x>
      <y>390</y>
      <width>75</width>
      <height>23</height>
@@ -46,6 +46,24 @@
     <string>OK</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>390</y>
+     <width>91</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>treeView</zorder>
+  <zorder>listView</zorder>
+  <zorder>ok_button</zorder>
+  <zorder>label</zorder>
+  <zorder>label</zorder>
  </widget>
  <resources/>
  <connections/>
