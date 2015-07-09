@@ -1,0 +1,110 @@
+CREATE TABLE Artist (
+Artist_ID SERIAL PRIMARY KEY,
+Artist_Name varchar(255)
+);
+
+CREATE TABLE Album (
+Album_ID SERIAL PRIMARY KEY,
+Album_Name varchar(255)
+);
+
+CREATE TABLE Genre(
+Genre_ID SERIAL PRIMARY KEY,
+Genre_Type varchar(255)
+);
+
+CREATE TABLE Songs(
+Song_ID SERIAL PRIMARY KEY,
+Song_Name varchar(255),
+Artist int,
+Album int,
+Address varchar(255),
+Genre int,
+Year int ,
+CONSTRAINT Artist FOREIGN KEY (Artist )
+REFERENCES Artist(Artist_ID),
+CONSTRAINT Album FOREIGN KEY (Album )
+REFERENCES Album (Album_ID),
+CONSTRAINT Genre FOREIGN KEY (Genre)
+REFERENCES Genre(Genre_ID)
+);
+
+INSERT INTO genre (Genre_Type) VALUES ('Cheese');
+INSERT INTO album(Album_Name) VALUES ('Story of Pain');
+INSERT INTO artist(Artist_Name) VALUES ('Milen');
+
+INSERT INTO songs(Song_Name ,Artist ,Album ,Address ,Genre ,Year ) VALUES ('Znam',1,1,'D:/',1,2015);
+INSERT INTO songs(Song_Name ,Artist ,Album ,Address ,Genre ,Year ) VALUES ('NE Znam',2,2,'D:/',2,2010);
+
+select songs.song_name,artist.artist_name,album.album_name, songs.address,genre.genre_type, songs.year from songs
+join artist
+on songs.artist = artist.artist_id
+join album
+on songs.album = album_id
+join genre
+on songs.genre = genre_id
+
+select songs.song_name, artist.artist_name, album.album_name,genre.genre_type, songs.address
+from songs
+join artist on songs.artist = artist.artist_id
+join album on songs.album = album_id
+join genre on songs.genre = genre_id
+where song_name = 'R U Crazy'
+
+# MERSI NA QNKO
+create view songs_full_info as
+select songs.song_name,artist.artist_name,album.album_name, songs.address,genre.genre_type, songs.year from songs \
+    join artist on songs.artist = artist.artist_id \
+    join album on songs.album = album_id \
+    join genre on songs.genre = genre_id
+
+INSERT INTO genre (Genre_Type) VALUES ('Blues');
+INSERT INTO genre (Genre_Type) VALUES ('Classic Rock');
+INSERT INTO genre (Genre_Type) VALUES ('Country');
+INSERT INTO genre (Genre_Type) VALUES ('Dance');
+INSERT INTO genre (Genre_Type) VALUES ('Disco');
+INSERT INTO genre (Genre_Type) VALUES ('Funk');
+INSERT INTO genre (Genre_Type) VALUES ('Grunge');
+INSERT INTO genre (Genre_Type) VALUES ('Hip-Hop');
+INSERT INTO genre (Genre_Type) VALUES ('Jazz');
+INSERT INTO genre (Genre_Type) VALUES ('Metal');
+INSERT INTO genre (Genre_Type) VALUES ('New Age');
+INSERT INTO genre (Genre_Type) VALUES ('Oldies');
+INSERT INTO genre (Genre_Type) VALUES ('Other');
+INSERT INTO genre (Genre_Type) VALUES ('Pop');
+INSERT INTO genre (Genre_Type) VALUES ('R&B');
+INSERT INTO genre (Genre_Type) VALUES ('Rap');
+INSERT INTO genre (Genre_Type) VALUES ('Reggae');
+INSERT INTO genre (Genre_Type) VALUES ('Rock');
+INSERT INTO genre (Genre_Type) VALUES ('Techno');
+INSERT INTO genre (Genre_Type) VALUES ('Industrial');
+INSERT INTO genre (Genre_Type) VALUES ('Alternative');
+INSERT INTO genre (Genre_Type) VALUES ('Metal');
+INSERT INTO genre (Genre_Type) VALUES ('Ska');
+INSERT INTO genre (Genre_Type) VALUES ('Death Metal');
+INSERT INTO genre (Genre_Type) VALUES ('Pranks');
+INSERT INTO genre (Genre_Type) VALUES ('Soundtrack');
+INSERT INTO genre (Genre_Type) VALUES ('Euro-Techno');
+INSERT INTO genre (Genre_Type) VALUES ('Ambient');
+INSERT INTO genre (Genre_Type) VALUES ('Trip-Hop');
+INSERT INTO genre (Genre_Type) VALUES ('Vocal');
+INSERT INTO genre (Genre_Type) VALUES ('Jazz+Funk');
+INSERT INTO genre (Genre_Type) VALUES ('Fusion');
+INSERT INTO genre (Genre_Type) VALUES ('Trance');
+INSERT INTO genre (Genre_Type) VALUES ('Classical');
+INSERT INTO genre (Genre_Type) VALUES ('Instrumental');
+INSERT INTO genre (Genre_Type) VALUES ('Acid');
+INSERT INTO genre (Genre_Type) VALUES ('House');
+INSERT INTO genre (Genre_Type) VALUES ('Game');
+INSERT INTO genre (Genre_Type) VALUES ('Sound Clip');
+INSERT INTO genre (Genre_Type) VALUES ('Gospel');
+INSERT INTO genre (Genre_Type) VALUES ('Noise');
+INSERT INTO genre (Genre_Type) VALUES ('AlternRock');
+INSERT INTO genre (Genre_Type) VALUES ('Bass');
+INSERT INTO genre (Genre_Type) VALUES ('Soul');
+INSERT INTO genre (Genre_Type) VALUES ('Punk');
+INSERT INTO genre (Genre_Type) VALUES ('Space');
+INSERT INTO genre (Genre_Type) VALUES ('Meditative');
+INSERT INTO genre (Genre_Type) VALUES ('Instrumental Pop');
+
+SELECT EXISTS(SELECT song_name FROM songs where Song_Name ='Little World' AND Artist = 1)

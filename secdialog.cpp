@@ -82,7 +82,7 @@ void SecDialog::on_ok_button_clicked()
     char genre; //number telling which genre the song belongs to
 
     //variable declaration (string)
-    string mp3Name = sPath.toLocal8Bit().constData(); //name of mp3 file
+    string mp3Name = sPath.toStdString(); //name of mp3 file
     qDebug() << sPath << endl;
     //variable declaration (read input from a file)
     ifstream mp3In; //read information from mp3 file
@@ -147,12 +147,11 @@ void SecDialog::on_ok_button_clicked()
         query.bindValue(":forth",sPath);
         query.bindValue(":fifth",(int)genre);
         query.bindValue(":sixth",(int)year);
-        qDebug() << 101 << query.exec();
+        query.exec();
         ui->label->setText("Record inserted");
     }
     else
     {
-        qDebug() << "Record already exists or it's missing data" << endl;
         messageBox.critical(0,"Error","Record already exists or it's missing data!");
         messageBox.setFixedSize(500,200);
     }
@@ -166,16 +165,13 @@ QVariant SecDialog::check_artist(char artist[31])
     QString queryString = QString("Select count(*) from Artist where Artist_Name='%1'").arg(artist);
     query.exec(queryString);
     query.first();
-    qDebug() << 1 << query.value(0).toInt(0) << endl;
     if(query.value(0).toInt(0) == 0)
     {
-        qDebug() << "inserted" << endl;
         query.exec(QString("INSERT INTO artist(Artist_Name) VALUES ('%1');").arg(artist));
         return query.lastInsertId();
     }
     else
     {
-        qDebug() << 2 << "was already in" << endl;
         query.exec(QString("SELECT artist_id FROM artist WHERE Artist_Name = ('%1');").arg(artist));
         query.first();
         return query.value(0);
@@ -190,16 +186,13 @@ QVariant SecDialog::check_album(char album[31])
     QString queryString = QString("Select count(*) from Album where Album_Name='%1'").arg(album);
     query.exec(queryString);
     query.first();
-    qDebug() << query.value(0).toInt(0) << endl;
     if(query.value(0).toInt(0) == 0)
     {
-        qDebug() << "inserted" << endl;
         query.exec(QString("INSERT INTO album(Album_Name) VALUES ('%1');").arg(album));
         return query.lastInsertId();
     }
     else
     {
-        qDebug() << "was already in" << endl;
         query.exec(QString("SELECT album_id FROM album WHERE Album_Name = ('%1');").arg(album));
         query.first();
         return query.value(0);

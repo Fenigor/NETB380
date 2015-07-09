@@ -99,14 +99,12 @@ void MainWindow::on_GoTo_clicked()
     }
     i= GoToStr.size() - i;
     GoToStr.chop(i-1);
-    qDebug() << GoToStr << endl;
     QDesktopServices::openUrl(QUrl("file:///" + GoToStr, QUrl::TolerantMode));
 }
 
 void MainWindow::on_tableView_clicked(const QModelIndex &index)
 {
     selected = ui->tableView->model()->data(index).toString();
-    qDebug() << index << endl;
 }
 
 void MainWindow::on_Search_Button_clicked()
